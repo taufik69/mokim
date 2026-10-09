@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #e9f7ef;
+  --color-brand-100: #cef5e3;
+  --color-brand-500: #00a352;
+  --color-brand-600: #008e48;
+  --color-brand-700: #006648;
+  --color-forest-800: #133a2c;
+  --color-forest-900: #0f2920;
+  --color-forest-950: #08180f;
+  --color-gold-300: #f8de9e;
+  --color-gold-400: #e8b65d;
+  --color-gold-500: #d9a03f;
+  --color-amber-brand: #d08322;
+  --color-cream: #faf7f0;
+  --color-muted: #637381;
+
+  --font-sans: var(--font-hind), var(--font-ubuntu), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 2px 6px 2px rgb(0 0 0 / 0.03);
+  --shadow-lift: 0 20px 40px -16px rgb(15 41 32 / 0.25);
+  --shadow-glow: 0 8px 16px rgb(0 142 72 / 0.24);
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-enter: enter .9s var(--ease-out-soft) both;
+  --animate-page-in: page-in .5s var(--ease-out-soft) both;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes page-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+  body {
+    @apply bg-white text-forest-900 antialiased;
+    font-feature-settings: "kern";
+  }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-brand-600; }
+  ::selection { @apply bg-gold-300 text-forest-900; }
+}
+
+@utility container-page {
+  /* 1240px content at desktop = same width as the navbar bar */
+  @apply mx-auto w-full max-w-[1272px] px-4 sm:px-6 lg:px-4;
+}
+
+@utility lattice {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80' fill='none' stroke='%23ffffff' stroke-opacity='.08'%3E%3Cpath d='M40 4 50 30 76 40 50 50 40 76 30 50 4 40 30 30Z'/%3E%3Ccircle cx='40' cy='40' r='12'/%3E%3C/svg%3E");
+  background-size: 80px;
+}
+
+@utility lattice-light {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80' fill='none' stroke='%23008e48' stroke-opacity='.07'%3E%3Cpath d='M40 4 50 30 76 40 50 50 40 76 30 50 4 40 30 30Z'/%3E%3Ccircle cx='40' cy='40' r='12'/%3E%3C/svg%3E");
+  background-size: 80px;
+}
+
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease-out-soft), transform .8s var(--ease-out-soft); }
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* Set by ScrollReveal on every page (data attributes, so React hydration ignores them). */
+[data-fx] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .8s var(--ease-out-soft), transform .8s var(--ease-out-soft);
+}
+[data-fx="in"] { opacity: 1; transform: none; }
+[data-fx-i="1"] { transition-delay: 100ms; }
+[data-fx-i="2"] { transition-delay: 200ms; }
+[data-fx-i="3"] { transition-delay: 300ms; }
+[data-fx-i="4"] { transition-delay: 400ms; }
+[data-fx-i="5"] { transition-delay: 500ms; }
+
+/* Staggered entrance for page heroes: add `enter` and an optional `enter-1..4`. */
+.enter { animation: var(--animate-enter); }
+.enter-1 { animation-delay: .08s; }
+.enter-2 { animation-delay: .18s; }
+.enter-3 { animation-delay: .28s; }
+.enter-4 { animation-delay: .38s; }
+
+/* Reading progress, driven by the scroll timeline (no JS). */
+.scroll-progress { display: none; }
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    position: fixed; inset: 0 0 auto; z-index: 60; height: 3px;
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--color-brand-500), var(--color-gold-400));
+    animation: progress linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+  .reveal, [data-fx] { opacity: 1; transform: none; }
+  .scroll-progress { display: none; }
+}
