@@ -14,13 +14,17 @@ type Props = {
 
 export default function PageBanner({ title, text, image, crumb, tone = "white" }: Props) {
   return (
-    <section className="relative isolate overflow-hidden bg-forest-950 pt-36 pb-24 text-white sm:pt-44 sm:pb-32">
-      <Parallax>
-        <Image src={image} alt="" fill preload sizes="100vw" className="object-cover" />
-      </Parallax>
-      <div className="absolute inset-0 -z-20 bg-gradient-to-b from-forest-950/90 via-forest-950/75 to-forest-950/95" />
-      <span className="lattice pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-      <span className="pointer-events-none absolute -bottom-24 left-1/2 -z-10 size-96 -translate-x-1/2 rounded-full bg-brand-600/30 blur-3xl" />
+    <section className="relative isolate overflow-hidden pt-36 pb-24 text-white sm:pt-44 sm:pb-32">
+      {/* Stops short of the bottom edge: the wave covers that strip, and on small screens the
+          composited parallax layer otherwise peeks out below the wave as a dark hairline. */}
+      <div className="absolute inset-x-0 top-0 bottom-3 -z-10 overflow-hidden bg-forest-950">
+        <Parallax>
+          <Image src={image} alt="" fill preload sizes="100vw" className="object-cover" />
+        </Parallax>
+        <div className="absolute inset-0 -z-20 bg-gradient-to-b from-forest-950/90 via-forest-950/75 to-forest-950/95" />
+        <span className="lattice pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
+        <span className="pointer-events-none absolute -bottom-24 left-1/2 -z-10 size-96 -translate-x-1/2 rounded-full bg-brand-600/30 blur-3xl" />
+      </div>
 
       <div className="container-page text-center">
         <nav aria-label="ব্রেডক্রাম্ব" className="enter mb-5 flex justify-center">
